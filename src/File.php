@@ -20,4 +20,25 @@ class File
         fclose($file);
         return $dataArray;
     }
+
+    public function createTable($data)
+    {
+        if (is_array($data)== true)
+        {
+            null;
+        }
+        else
+        {
+            return "Input is not valid array";
+        }
+        $lines = array();
+        foreach ($data as $row) {
+            $cells = array();
+            foreach ($row as $cell) {
+                $cells[] = "<td>{$cell}</td>";
+            }
+            $lines[] = "<tr>" . implode('', $cells) . "</tr>";
+        }
+        return "<table class='hci-table'>" . implode('', $lines) . "</table>";
+    }
 }
