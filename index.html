@@ -34,23 +34,6 @@
     </div>
 </nav>
 
-<div>
-    <table style="width:100%">
-        <tr>
-            <?php for (($i=1;$i<=sizeof($headers);$i++){ ?>
-            <th><?php echo $headers[$i]; ?></th>
-            <?php } ?>
-        </tr>
-        <?php for (($i=1;$i<=sizeof($columns);$i++){ ?>
-        <tr>
-            <?php for (($x=1;$x<=sizeof($columns[$i]);$x++){ ?>
-            <td><?php $columns[$i][$x]; ?></td>
-            <?php } ?>
-        </tr>
-        <?php } ?>
-    </table>
-</div>
-
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
