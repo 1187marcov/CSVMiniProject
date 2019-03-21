@@ -23,8 +23,17 @@ final class FileTest extends TestCase
 
     public function testConvertFile()
     {
-        $this -> assertFileIsReadable('data/data.csv');
+        $this->assertFileIsReadable('data/data.csv');
         $records = File::fileToArray("data/data.csv");
         print_r($records);
     }
+
+    public function testTableArray()
+    {
+        $data = File::fileToArray("data/data.csv");
+        $this->assertIsArray($data);
+        $table= File::createTable($data);
+        print_r($table);
+    }
+
 }

@@ -2,7 +2,6 @@
 
 class File
 {
-
     public static function fileToArray(String $filesource): array
     {
         $file = fopen($filesource, 'r');
@@ -37,4 +36,10 @@ class File
         }
         return "<table class='hci-table'>" . implode('', $lines) . "</table>";
     }
+
 }
+
+$filesource = "data/data.csv";
+echo createTable(fileToArray($filesource));
+
+
