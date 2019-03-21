@@ -23,11 +23,7 @@ class File
 
     public function createTable($data)
     {
-        if (is_array($data)== true)
-        {
-            null;
-        }
-        else
+        if (is_array($data)== false)
         {
             return "Input is not valid array";
         }
