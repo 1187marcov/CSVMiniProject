@@ -20,7 +20,7 @@ class File
         return $dataArray;
     }
 
-    public function createTable($data)
+    public static function createTable($data) : string
     {
         if (is_array($data)== false)
         {
@@ -38,8 +38,4 @@ class File
     }
 
 }
-
-$filesource = "data/data.csv";
-echo createTable(fileToArray($filesource));
-
 
