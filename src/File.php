@@ -34,7 +34,7 @@ class File
             }
             $lines[] = "<tr>" . implode('', $cells) . "</tr>";
         }
-        echo "<table class='table'>" . implode('', $lines) . "</table>";
+        return "<table class='table'>" . implode('', $lines) . "</table>";
     }
 
 }
