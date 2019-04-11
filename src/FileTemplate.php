@@ -37,6 +37,7 @@ class FileTemplate
         return $headers;
     }
 
+
     public static function columnsFromCsV(String $filesource) :array
     {
         $file = fopen($filesource, 'r');

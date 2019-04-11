@@ -2,7 +2,7 @@
 
 class File
 {
-    public static function fileToArray(String $filesource): array
+    public function fileToArray(String $filesource): array
     {
         $file = fopen($filesource, 'r');
         $headers = array();
@@ -20,7 +20,7 @@ class File
         return $dataArray;
     }
 
-    public static function createTable($data) : string
+    public function createTable($data) : string
     {
         if (is_array($data)== false)
         {
@@ -34,7 +34,7 @@ class File
             }
             $lines[] = "<tr>" . implode('', $cells) . "</tr>";
         }
-        return "<table class='hci-table'>" . implode('', $lines) . "</table>";
+        echo "<table class='table'>" . implode('', $lines) . "</table>";
     }
 
 }

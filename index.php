@@ -25,7 +25,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Table
+                    <a class="nav-link" href="index.php">Table
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -34,12 +34,12 @@
     </div>
 </nav>
 
-<div>
-    <?php use src/File.php;
-        $filesource = 'data/data.csv';
-        echo createTable(fileToArray($filesource));
-    ?>
-</div>
+<?php
+    include('C:\Users\1187m\PhpstormProjects\CSVMiniProject\src\File.php');
+    $filesource = 'data/data.csv';
+    $data = fileToArray($filesource);
+    echo $data;
+?>
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
