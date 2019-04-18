@@ -6,8 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'File' => $baseDir . '/src/File.php',
-    'FileTemplate' => $baseDir . '/src/FileTemplate.php',
     'Help' => $vendorDir . '/phpunit/phpunit/src/Util/Help.php',
     'PHPUnit\\Exception' => $vendorDir . '/phpunit/phpunit/src/Exception.php',
     'PHPUnit\\Framework\\Assert' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -155,6 +153,7 @@ return array(
     'PHPUnit\\Runner\\BaseTestRunner' => $vendorDir . '/phpunit/phpunit/src/Runner/BaseTestRunner.php',
     'PHPUnit\\Runner\\BeforeFirstTestHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/BeforeFirstTestHook.php',
     'PHPUnit\\Runner\\BeforeTestHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/BeforeTestHook.php',
+    'PHPUnit\\Runner\\DefaultTestResultCache' => $vendorDir . '/phpunit/phpunit/src/Runner/DefaultTestResultCache.php',
     'PHPUnit\\Runner\\Exception' => $vendorDir . '/phpunit/phpunit/src/Runner/Exception.php',
     'PHPUnit\\Runner\\Filter\\ExcludeGroupFilterIterator' => $vendorDir . '/phpunit/phpunit/src/Runner/Filter/ExcludeGroupFilterIterator.php',
     'PHPUnit\\Runner\\Filter\\Factory' => $vendorDir . '/phpunit/phpunit/src/Runner/Filter/Factory.php',
@@ -169,7 +168,6 @@ return array(
     'PHPUnit\\Runner\\TestHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/TestHook.php',
     'PHPUnit\\Runner\\TestListenerAdapter' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/TestListenerAdapter.php',
     'PHPUnit\\Runner\\TestResultCache' => $vendorDir . '/phpunit/phpunit/src/Runner/TestResultCache.php',
-    'PHPUnit\\Runner\\TestResultCacheInterface' => $vendorDir . '/phpunit/phpunit/src/Runner/TestResultCacheInterface.php',
     'PHPUnit\\Runner\\TestSuiteLoader' => $vendorDir . '/phpunit/phpunit/src/Runner/TestSuiteLoader.php',
     'PHPUnit\\Runner\\TestSuiteSorter' => $vendorDir . '/phpunit/phpunit/src/Runner/TestSuiteSorter.php',
     'PHPUnit\\Runner\\Version' => $vendorDir . '/phpunit/phpunit/src/Runner/Version.php',

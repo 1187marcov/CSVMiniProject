@@ -16,6 +16,10 @@ class ComposerStaticInit43eec117aa67a4e4d26b130dfaab10cf
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'm' => 
+        array (
+            'mrv1187\\' => 8,
+        ),
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
@@ -37,6 +41,10 @@ class ComposerStaticInit43eec117aa67a4e4d26b130dfaab10cf
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'mrv1187\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -67,8 +75,6 @@ class ComposerStaticInit43eec117aa67a4e4d26b130dfaab10cf
     );
 
     public static $classMap = array (
-        'File' => __DIR__ . '/../..' . '/src/File.php',
-        'FileTemplate' => __DIR__ . '/../..' . '/src/FileTemplate.php',
         'Help' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Help.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -216,6 +222,7 @@ class ComposerStaticInit43eec117aa67a4e4d26b130dfaab10cf
         'PHPUnit\\Runner\\BaseTestRunner' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/BaseTestRunner.php',
         'PHPUnit\\Runner\\BeforeFirstTestHook' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Hook/BeforeFirstTestHook.php',
         'PHPUnit\\Runner\\BeforeTestHook' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Hook/BeforeTestHook.php',
+        'PHPUnit\\Runner\\DefaultTestResultCache' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DefaultTestResultCache.php',
         'PHPUnit\\Runner\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Exception.php',
         'PHPUnit\\Runner\\Filter\\ExcludeGroupFilterIterator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Filter/ExcludeGroupFilterIterator.php',
         'PHPUnit\\Runner\\Filter\\Factory' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Filter/Factory.php',
@@ -230,7 +237,6 @@ class ComposerStaticInit43eec117aa67a4e4d26b130dfaab10cf
         'PHPUnit\\Runner\\TestHook' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Hook/TestHook.php',
         'PHPUnit\\Runner\\TestListenerAdapter' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Hook/TestListenerAdapter.php',
         'PHPUnit\\Runner\\TestResultCache' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/TestResultCache.php',
-        'PHPUnit\\Runner\\TestResultCacheInterface' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/TestResultCacheInterface.php',
         'PHPUnit\\Runner\\TestSuiteLoader' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/TestSuiteLoader.php',
         'PHPUnit\\Runner\\TestSuiteSorter' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/TestSuiteSorter.php',
         'PHPUnit\\Runner\\Version' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/Version.php',

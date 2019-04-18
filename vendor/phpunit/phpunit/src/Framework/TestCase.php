@@ -119,12 +119,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $expectedException;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $expectedExceptionMessage;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $expectedExceptionMessageRegExp;
 
@@ -262,6 +262,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @var Comparator[]
      */
     private $customComparators = [];
+
+    /**
+     * @var string[]
+     */
+    private $doubledTypes = [];
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -440,6 +445,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return 1;
     }
 
+    /**
+     * @return string[]
+     */
+    public function doubledTypes(): array
+    {
+        return \array_unique($this->doubledTypes);
+    }
+
     public function getGroups(): array
     {
         return $this->groups;
@@ -570,12 +583,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->expectedExceptionCode;
     }
 
-    public function getExpectedExceptionMessage(): string
+    public function getExpectedExceptionMessage(): ?string
     {
         return $this->expectedExceptionMessage;
     }
 
-    public function getExpectedExceptionMessageRegExp(): string
+    public function getExpectedExceptionMessageRegExp(): ?string
     {
         return $this->expectedExceptionMessageRegExp;
     }
@@ -967,6 +980,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->dependencyInput = $dependencyInput;
     }
 
+    public function getDependencyInput(): array
+    {
+        return $this->dependencyInput;
+    }
+
     public function setBeStrictAboutChangesToGlobalState(?bool $beStrictAboutChangesToGlobalState): void
     {
         $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
@@ -1052,6 +1070,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function getMockBuilder($className): MockBuilder
     {
+        $this->recordDoubledType($className);
+
         return new MockBuilder($this, $className);
     }
 
@@ -1388,6 +1408,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
+        $this->recordDoubledType($originalClassName);
+
         $mock = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
             $methods,
@@ -1421,6 +1443,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
+        $this->recordDoubledType($originalClassName);
+
         $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
             $originalClassName,
             $arguments,
@@ -1452,6 +1476,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
+        $this->recordDoubledType('SoapClient');
+
         if ($originalClassName === '') {
             $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
             $originalClassName = \preg_replace('/[^a-zA-Z0-9_]/', '', $fileName);
@@ -1502,6 +1528,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
+        $this->recordDoubledType($traitName);
+
         $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
             $traitName,
             $arguments,
@@ -1535,6 +1563,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
     {
+        $this->recordDoubledType($traitName);
+
         return $this->getMockObjectGenerator()->getObjectForTrait(
             $traitName,
             $arguments,
@@ -1554,6 +1584,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
+        if (\is_string($classOrInterface)) {
+            $this->recordDoubledType($classOrInterface);
+        }
+
         return $this->getProphet()->prophesize($classOrInterface);
     }
 
@@ -1707,13 +1741,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $className  = \get_class($this);
             $passed     = $this->result->passed();
             $passedKeys = \array_keys($passed);
-            $numKeys    = \count($passedKeys);
 
-            for ($i = 0; $i < $numKeys; $i++) {
-                $pos = \strpos($passedKeys[$i], ' with data set');
+            foreach ($passedKeys as $key => $value) {
+                $pos = \strpos($value, ' with data set');
 
                 if ($pos !== false) {
-                    $passedKeys[$i] = \substr($passedKeys[$i], 0, $pos);
+                    $passedKeys[$key] = \substr($value, 0, $pos);
                 }
             }
 
@@ -1744,22 +1777,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (!isset($passedKeys[$dependency])) {
-                    $this->status = BaseTestRunner::STATUS_SKIPPED;
-
-                    $this->result->startTest($this);
-
-                    $this->result->addError(
-                        $this,
-                        new SkippedTestError(
-                            \sprintf(
-                                'This test depends on "%s" to pass.',
-                                $dependency
-                            )
-                        ),
-                        0
-                    );
-
-                    $this->result->endTest($this, 0);
+                    if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
+                        $this->markWarningForUncallableDependency($dependency);
+                    } else {
+                        $this->markSkippedForMissingDependecy($dependency);
+                    }
 
                     return false;
                 }
@@ -1796,6 +1818,40 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return true;
+    }
+
+    private function markSkippedForMissingDependecy(string $dependency): void
+    {
+        $this->status = BaseTestRunner::STATUS_SKIPPED;
+        $this->result->startTest($this);
+        $this->result->addError(
+            $this,
+            new SkippedTestError(
+                \sprintf(
+                    'This test depends on "%s" to pass.',
+                    $dependency
+                )
+            ),
+            0
+        );
+        $this->result->endTest($this, 0);
+    }
+
+    private function markWarningForUncallableDependency(string $dependency): void
+    {
+        $this->status = BaseTestRunner::STATUS_WARNING;
+        $this->result->startTest($this);
+        $this->result->addWarning(
+            $this,
+            new Warning(
+                \sprintf(
+                    'This test depends on "%s" which does not exist.',
+                    $dependency
+                )
+            ),
+            0
+        );
+        $this->result->endTest($this, 0);
     }
 
     /**
@@ -1848,11 +1904,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function snapshotGlobalState(): void
     {
         if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$this->backupGlobals === true && !$this->backupStaticAttributes)) {
+            (!$this->backupGlobals && !$this->backupStaticAttributes)) {
             return;
         }
 
-        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
+        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals);
     }
 
     /**
@@ -1870,7 +1926,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             try {
                 $this->compareGlobalStateSnapshots(
                     $this->snapshot,
-                    $this->createGlobalStateSnapshot($this->backupGlobals === true)
+                    $this->createGlobalStateSnapshot($this->backupGlobals)
                 );
             } catch (RiskyTestError $rte) {
                 // Intentionally left empty
@@ -1879,7 +1935,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $restorer = new Restorer;
 
-        if ($this->backupGlobals === true) {
+        if ($this->backupGlobals) {
             $restorer->restoreGlobalVariables($this->snapshot);
         }
 
@@ -1942,7 +1998,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
+        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals;
 
         if ($backupGlobals) {
             $this->compareGlobalStateSnapshotPart(
@@ -2024,9 +2080,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []): void
     {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
-            $enumerator = new Enumerator;
-
-            foreach ($enumerator->enumerate($testArguments) as $object) {
+            foreach ((new Enumerator)->enumerate($testArguments) as $object) {
                 if ($object instanceof MockObject) {
                     $this->registerMockObject($object);
                 }
@@ -2135,7 +2189,25 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function runInSeparateProcess(): bool
     {
-        return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
-               $this->inIsolation !== true && !$this instanceof PhptTestCase;
+        return ($this->runTestInSeparateProcess || $this->runClassInSeparateProcess) &&
+            !$this->inIsolation && !$this instanceof PhptTestCase;
+    }
+
+    /**
+     * @param string|string[] $originalClassName
+     */
+    private function recordDoubledType($originalClassName): void
+    {
+        if (\is_string($originalClassName)) {
+            $this->doubledTypes[] = $originalClassName;
+        }
+
+        if (\is_array($originalClassName)) {
+            foreach ($originalClassName as $_originalClassName) {
+                if (\is_string($_originalClassName)) {
+                    $this->doubledTypes[] = $_originalClassName;
+                }
+            }
+        }
     }
 }

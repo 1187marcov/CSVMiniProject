@@ -17,22 +17,22 @@ final class FileTest extends TestCase
 
     public function testFileObject()
     {
-        $file = new File();
+        $file = new \mrv1187\file\FileToArray();
         print_r($file);
     }
 
     public function testConvertFile()
     {
         $this->assertFileIsReadable("data/data.csv");
-        $records = File::fileToArray("data/data.csv");
+        $records = \mrv1187\file\FileToArray::fileToArray("data/data.csv");
         print_r($records);
     }
 
     public function testTableArray()
     {
-        $data = File::fileToArray("data/data.csv");
+        $data = \mrv1187\file\FileToArray::fileToArray("data/data.csv");
         $this->assertIsArray($data);
-        $table= File::createTable($data);
+        $table= \mrv1187\table\TableCreation::createTable($data);
         print_r($table);
     }
 

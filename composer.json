@@ -8,8 +8,10 @@
     "license": "mit",
 
     "autoload": {
-        "psr-4": {"1187m\\": "src/"},
+        "psr-4": {"mrv1187\\": "src/"}
     },
 
-    "require": {}
+    "require": {
+        "ext-pdo": "*"
+    }
 }

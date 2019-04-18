@@ -1,3 +1,10 @@
+<?php
+namespace mrv1187;
+use mrv1187\Table\TableCreation;
+use mrv1187\DB;
+require_once "vendor/autoload.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,10 +42,18 @@
 </nav>
 
 <?php
-    include('C:\Users\1187m\PhpstormProjects\CSVMiniProject\src\File.php');
-    $filesource = 'data/data.csv';
-    $data = fileToArray($filesource);
-    echo $data;
+
+    $data = FileToArray::fileToArray('data/data.csv');
+    $table = TableCreation::createTable($data);
+    echo $table;
+
+
+/**$pdo = (new SQLiteConnection())->connect();
+if ($pdo != null)
+echo 'Connected to the SQLite database successfully!';
+else
+echo 'Whoops, could not connect to the SQLite database!'; */
+phpinfo();
 ?>
 
 <script src="vendor/jquery/jquery.min.js"></script>
