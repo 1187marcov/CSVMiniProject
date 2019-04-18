@@ -57,9 +57,10 @@ echo 'Connected to the SQLite database successfully!';
 else
 echo 'Whoops, could not connect to the SQLite database!';
 
-$stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND status=?');
-$stmt->execute([$email, $status]);
-$user = $stmt->fetch();
+$stmt = $pdo->prepare('SELECT * FROM contacts1');
+$stmt->execute();
+$contacts= $stmt->fetchObject();
+print_r($contacts);
 
 //phpinfo();
 ?>
