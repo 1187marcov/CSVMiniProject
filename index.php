@@ -1,6 +1,6 @@
 <?php
 namespace mrv1187;
-/**use mrv1187\Table\Headers;*/
+//use mrv1187\Table\Headers;
 use mrv1187\Table\TableCreation;
 use mrv1187\DB;
 require_once "vendor/autoload.php";
@@ -46,9 +46,9 @@ require_once "vendor/autoload.php";
 
     $data = FileToArray::fileToArray('data/data.csv');
     $table = TableCreation::createTable($data);
-    /**$headers = Headers::headersFromCSV('data/data.csv');
-    $headings = TableCreation::createTable($headers);
-    echo $headings;*/
+    //$headers = Headers::headersFromCSV('data/data.csv');
+    //$headings = TableCreation::createTable($headers);
+    //echo $headings;
     echo $table;
 
 $pdo = (new DB\SQLiteConnection())->connect();
@@ -57,7 +57,11 @@ echo 'Connected to the SQLite database successfully!';
 else
 echo 'Whoops, could not connect to the SQLite database!';
 
-phpinfo();
+$stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND status=?');
+$stmt->execute([$email, $status]);
+$user = $stmt->fetch();
+
+//phpinfo();
 ?>
 
 <script src="vendor/jquery/jquery.min.js"></script>
