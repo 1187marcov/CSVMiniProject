@@ -1,5 +1,6 @@
 <?php
 namespace mrv1187;
+/**use mrv1187\Table\Headers;*/
 use mrv1187\Table\TableCreation;
 use mrv1187\DB;
 require_once "vendor/autoload.php";
@@ -32,7 +33,7 @@ require_once "vendor/autoload.php";
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Table
+                    <a class="nav-link" href="index.php"> Table
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -45,14 +46,17 @@ require_once "vendor/autoload.php";
 
     $data = FileToArray::fileToArray('data/data.csv');
     $table = TableCreation::createTable($data);
+    /**$headers = Headers::headersFromCSV('data/data.csv');
+    $headings = TableCreation::createTable($headers);
+    echo $headings;*/
     echo $table;
 
-
-/**$pdo = (new SQLiteConnection())->connect();
+$pdo = (new DB\SQLiteConnection())->connect();
 if ($pdo != null)
 echo 'Connected to the SQLite database successfully!';
 else
-echo 'Whoops, could not connect to the SQLite database!'; */
+echo 'Whoops, could not connect to the SQLite database!';
+
 phpinfo();
 ?>
 
