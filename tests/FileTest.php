@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
-
+namespace mrv1187;
 use PHPUnit\Framework\TestCase;
+use mrv1187\Table\TableCreation;
 
 final class FileTest extends TestCase
 {
@@ -17,22 +18,22 @@ final class FileTest extends TestCase
 
     public function testFileObject()
     {
-        $file = new \mrv1187\file\FileToArray();
+        $file = new FileToArray();
         print_r($file);
     }
 
     public function testConvertFile()
     {
         $this->assertFileIsReadable("data/data.csv");
-        $records = \mrv1187\file\FileToArray::fileToArray("data/data.csv");
+        $records = FileToArray::fileToArray("data/data.csv");
         print_r($records);
     }
 
     public function testTableArray()
     {
-        $data = \mrv1187\file\FileToArray::fileToArray("data/data.csv");
+        $data = FileToArray::fileToArray("data/data.csv");
         $this->assertIsArray($data);
-        $table= \mrv1187\table\TableCreation::createTable($data);
+        $table= TableCreation::createTable($data);
         print_r($table);
     }
 
