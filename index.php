@@ -59,11 +59,17 @@ echo 'Whoops, could not connect to the SQLite database!';
 
 $stmt = $pdo->prepare('SELECT * FROM contacts1');
 $stmt->execute();
-$contacts= $stmt->fetchObject();
-print_r($contacts);
-
+$contacts= $stmt->fetchAll();
+$table = ArrayFilter::filter($contacts);
+echo TableCreation::createTable($table);
 //phpinfo();
 ?>
+
+<form action="index.php" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Upload Image" name="submit">
+</form>
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

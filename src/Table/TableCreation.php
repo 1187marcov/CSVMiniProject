@@ -21,4 +21,6 @@ class TableCreation
         return "<table class='table'>" . implode('', $lines) . "</table>";
     }
 
+
+
 }
