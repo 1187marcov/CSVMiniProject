@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace mrv1187;
 use PHPUnit\Framework\TestCase;
 use mrv1187\Table\TableCreation;
@@ -36,5 +37,15 @@ final class FileTest extends TestCase
         $table= TableCreation::createTable($data);
         print_r($table);
     }
+
+    public function testArrayFilter()
+    {
+        $data = FileToArray::fileToArray("data/data.csv");
+        $this->assertIsArray($data);
+        $table = ArrayFilter::filter($data);
+        print_r($table);
+    }
+
+
 
 }

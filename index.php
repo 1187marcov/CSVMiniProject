@@ -1,6 +1,5 @@
 <?php
 namespace mrv1187;
-//use mrv1187\Table\Headers;
 use mrv1187\Table\TableCreation;
 use mrv1187\DB;
 require_once "vendor/autoload.php";
@@ -43,13 +42,6 @@ require_once "vendor/autoload.php";
 </nav>
 
 <?php
-
-    $data = FileToArray::fileToArray('data/data.csv');
-    $table = TableCreation::createTable($data);
-    //$headers = Headers::headersFromCSV('data/data.csv');
-    //$headings = TableCreation::createTable($headers);
-    //echo $headings;
-    echo $table;
 
 $pdo = (new DB\SQLiteConnection())->connect();
 if ($pdo != null)
